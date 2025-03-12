@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from src.sun_calculator import SunCalculator  # Updated import path
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from src.sun_calculator import SunCalculator
 import datetime
 import configparser
-import os
 from pathlib import Path
 import secrets
 import pytz

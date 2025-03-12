@@ -5,7 +5,7 @@ import pytz
 import configparser
 
 class SunCalculator:
-    def __init__(self, config_path='../config.ini'):
+    def __init__(self, config_path='config.ini'):  # Changed from '../config.ini'
         self.config = configparser.ConfigParser()
         self.config.read(config_path)
         self.timezone = pytz.UTC
@@ -50,3 +50,9 @@ class SunCalculator:
                 'time_until': tomorrow_times['sunrise'] - now,
                 'timestamp': tomorrow_times['sunrise']
             }
+
+    def is_dark(self):
+        """Check if it's currently dark enough for observation"""
+        now = datetime.now(self.timezone)
+        times = self.get_sun_times()
+        return now > times['dusk'] or now < times['dawn']
