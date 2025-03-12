@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
+from src.sun_calculator import SunCalculator  # Updated import path
+import datetime
 import configparser
 import os
 from pathlib import Path
 import secrets
+import pytz
 
 app = Flask(__name__)
 # Add secret key for session management
@@ -18,13 +21,21 @@ admin_data_path.mkdir(parents=True, exist_ok=True)
 
 @app.route('/')
 def home():
-    project_info = {
-        'name': 'Minor Detection Station (MDS)',
+    sun_calc = SunCalculator()
+    next_event = sun_calc.time_until_next_event()
+    
+    info = {
+        'name': 'Minor Detection Station',
         'version': '1.0.0',
-        'description': 'Automated software designed to detect and track minor celestial objects using a fixed observation station.',
-        'station_id': config['System']['station_id']
+        'station_id': config['System']['station_id'],
+        'description': config['System']['description'],
+        'next_session': {
+            'event': next_event['event'],
+            'time_until': next_event['time_until'],
+            'timestamp': next_event['timestamp'].strftime('%Y-%m-%d %H:%M:%S %Z')
+        }
     }
-    return render_template('home.html', info=project_info)
+    return render_template('home.html', info=info)
 
 def save_config(config):
     with open('../config.ini', 'w') as configfile:

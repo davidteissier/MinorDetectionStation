@@ -16,5 +16,39 @@
             <p class="card-text">{{ info.description }}</p>
         </div>
     </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Next Observation Session</h5>
+            <p class="card-text">
+                <strong>Event:</strong> {{ info.next_session.event }}<br>
+                <strong>Starts at:</strong> {{ info.next_session.timestamp }}<br>
+                <strong>Time until start:</strong> <span id="countdown"></span>
+            </p>
+        </div>
+    </div>
 </div>
+
+<script>
+// Set the target time from the server
+const targetTime = new Date("{{ info.next_session.timestamp }}").getTime();
+
+// Update countdown every second
+const countdownTimer = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = targetTime - now;
+
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = 
+        hours + "h " + minutes + "m " + seconds + "s ";
+
+    if (distance < 0) {
+        clearInterval(countdownTimer);
+        document.getElementById("countdown").innerHTML = "Session Started";
+    }
+}, 1000);
+</script>
 {% endblock %}
