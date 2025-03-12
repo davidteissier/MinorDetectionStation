@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Parameters{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>System Parameters</h1>
+    
+    <form method="POST" id="paramForm">
+        <div class="accordion mt-4" id="parametersAccordion">
+            <!-- System Configuration Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="systemHeader">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#systemCollapse">
+                        System Configuration
+                    </button>
+                </h2>
+                <div id="systemCollapse" class="accordion-collapse collapse show" data-bs-parent="#parametersAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label class="form-label">Station ID</label>
+                            <input type="text" class="form-control" name="station_id" 
+                                   value="{{ config['System']['station_id'] }}"
+                                   data-bs-toggle="tooltip" 
+                                   title="Unique identifier for your observation station">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Latitude</label>
+                            <input type="text" class="form-control" name="latitude" 
+                                   value="{{ config['System']['latitude'] }}"
+                                   data-bs-toggle="tooltip" 
+                                   title="Station latitude in degrees (-90 to 90)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Longitude</label>
+                            <input type="text" class="form-control" name="longitude" 
+                                   value="{{ config['System']['longitude'] }}"
+                                   data-bs-toggle="tooltip" 
+                                   title="Station longitude in degrees (-180 to 180)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Altitude (m)</label>
+                            <input type="text" class="form-control" name="altitude" 
+                                   value="{{ config['System']['altitude'] }}"
+                                   data-bs-toggle="tooltip" 
+                                   title="Station altitude in meters above sea level">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capture Settings Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="captureHeader">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#captureCollapse">
+                        Capture Settings
+                    </button>
+                </h2>
+                <div id="captureCollapse" class="accordion-collapse collapse" data-bs-parent="#parametersAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label class="form-label">Camera Model</label>
+                            <input type="text" class="form-control" name="camera_model" 
+                                   value="{{ config['Capture']['camera_model'] }}"
+                                   data-bs-toggle="tooltip" 
+                                   title="Model name of your astronomical camera">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Exposure Time</label>
+                            <input type="text" class="form-control" name="exposure_time" 
+                                   value="{{ config['Capture']['exposure_time'] }}"
+                                   data-bs-toggle="tooltip" 
+                                   title="Default exposure time for captures">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 mb-4">
+            <button type="submit" class="btn btn-primary" id="saveButton">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<script>
+// Initialize tooltips
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+// Add form submission confirmation
+document.getElementById('paramForm').onsubmit = function(e) {
+    if (!confirm('Are you sure you want to save these changes?')) {
+        e.preventDefault();
+    }
+}
+</script>
+{% endblock %}

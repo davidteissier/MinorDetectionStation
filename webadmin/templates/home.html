@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Web Admin MDS</h1>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Project Information</h5>
+            <p class="card-text">
+                <strong>Name:</strong> {{ info.name }}<br>
+                <strong>Version:</strong> {{ info.version }}<br>
+                <strong>Station ID:</strong> {{ info.station_id }}
+            </p>
+            <p class="card-text">{{ info.description }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
